@@ -31,3 +31,7 @@ output/
 
 # Local agent and editor tooling
 .claude/
+
+# pixi-pack
+environment.tar
+unpacked/
