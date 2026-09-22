@@ -12,15 +12,16 @@ WORKDIR /app
 COPY pixi.toml pixi.lock ./
 
 # Install the default environment from pixi.lock without re-solving.
-RUN pixi FIXME
+RUN pixi install --locked
 
 # Bake the activation shell-hook into a script, so the runtime stage needs no Pixi.
-RUN pixi FIXME
+RUN pixi shell-hook --shell bash > /shell-hook.sh \
+    && echo 'exec "$@"' >> /shell-hook.sh
 
 FROM ubuntu:26.04 AS runtime
 
 # Copy the default environment to the same absolute path in the runtime stage.
-COPY --from=build FIXME
+COPY --from=build /app/.pixi/envs/default /app/.pixi/envs/default
 COPY --from=build /shell-hook.sh /shell-hook.sh
 
 WORKDIR /app
